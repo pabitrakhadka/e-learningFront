@@ -18,6 +18,7 @@ import { FaTrash } from 'react-icons/fa6';
 import { AiFillEdit, AiOutlineFolderView } from 'react-icons/ai';
 import { FaEdit } from 'react-icons/fa';
 import { CiRead } from "react-icons/ci";
+import CardNewsLoader from '@/components/UILoader/CardNewsLoader ';
 
 
 const initialValues = {
@@ -30,7 +31,7 @@ const initialValues = {
 const News = () => {
     const { showToast } = useToast();
     const { admin } = useContext(AdminAuthContext);
-
+    const [isloading, setLoading] = useState(true);
     const [newsList, setNewsList] = useState([]);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [categories, setCategories] = useState([]);
@@ -78,6 +79,7 @@ const News = () => {
             if (res?.status === 200) {
                 setNewsList(res?.data?.data || []);
                 console.log(res.data.data);
+                setLoading(false);
             } else {
                 showToast(res?.status, "Failed to load categories.");
             }
@@ -217,11 +219,14 @@ const News = () => {
         <DashLayout>
             <div>
                 <ButtonComp onClick={openModal} name="Add News" icon={<FaNewspaper size={30} />} />
-
+                {/* <CardNewsLoader isNews={true} isUserNews={true} /> */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {newsList.length > 0 ? (
                         newsList.map((item, index) => (
-                            <div className='shadow-md p-5'>
+                            isloading ? <>
+
+                                <CardNewsLoader />
+                            </> : <><div className='shadow-md p-5'>
                                 <CardNews
 
                                     image={item?.file_url}
@@ -238,7 +243,7 @@ const News = () => {
                                     <ButtonComp onClick={() => handleEdit(item?.id)} icon={<FaEdit size={25} />} />
                                     <ButtonComp onClick={() => handleView(item?.id)} icon={<CiRead size={25} />} />
                                 </div>
-                            </div>
+                            </div></>
                         ))
                     ) : (
                         <p className="text-center text-gray-500 w-full">No news available</p>

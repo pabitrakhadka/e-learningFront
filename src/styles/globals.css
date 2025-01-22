@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: "Preeti", sans-serif;
+  font-family: "Noto Sans Devanagari", sans-serif;
+}
+
 /* slider css */
 .container__slider {
   position: relative;
@@ -20,9 +25,8 @@
   flex-direction: row;
   flex-wrap: nowrap;
   background-color: black;
-  height: 80vh; /* Adjust the height as needed for responsiveness */
+  height: 80vh;
 }
-
 .container__slider > button {
   background-color: transparent;
   outline: none;
@@ -109,10 +113,28 @@
   transform: translateX(-300%);
 }
 
-.slider__item img {
+/* .slider__item img {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: fill;
+} */
+
+.map-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /* Responsive Styles */
@@ -139,6 +161,10 @@
     bottom: 5px; /* Adjust description positioning */
     left: 5px;
     font-size: 0.9rem;
+  }
+
+  .map-container {
+    padding-top: 75%; /* 4:3 Aspect Ratio for smaller screens */
   }
 }
 

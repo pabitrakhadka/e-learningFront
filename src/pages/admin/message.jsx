@@ -1,6 +1,7 @@
 import ButtonComp from '@/components/ButtonComp';
 import DashLayout from '@/components/DashLayout'
 import { Table, Tbody, Td, Thead, Tr } from '@/components/TableComp';
+import TableLoader from '@/components/UILoader/TableLoader';
 import { useToast } from '@/Context/TostContext';
 import { deleteContact, getContact } from '@/function/contact';
 import React, { useEffect, useState } from 'react'
@@ -48,6 +49,7 @@ const message = () => {
                 setContactData(res.data.data);
                 console.log(res.data.data);
                 console.log("Get Contact data");
+                setLoading(false);
             } else {
 
             }
@@ -59,7 +61,7 @@ const message = () => {
     return (
         <DashLayout>
             <div>
-                <Table>
+                {loading ? <><TableLoader /></> : <><Table>
                     <Thead>
                         <Td>S.N</Td>
                         <Td>Name</Td>
@@ -96,7 +98,7 @@ const message = () => {
                             </>
                         }
                     </Tbody>
-                </Table>
+                </Table></>}
             </div>
         </DashLayout>
     )

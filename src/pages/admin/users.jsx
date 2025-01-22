@@ -1,6 +1,7 @@
 import ButtonComp from '@/components/ButtonComp';
 import DashLayout from '@/components/DashLayout'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@/components/TableComp';
+import TableLoader from '@/components/UILoader/TableLoader';
 import { useToast } from '@/Context/TostContext';
 import { deleteUser, getUser } from '@/function/user';
 import React, { useEffect, useState } from 'react'
@@ -68,7 +69,9 @@ const users = () => {
                 <ButtonComp name={'Add User'} />
                 <h1>Users</h1>
                 <div>
-                    <Table>
+                    {loading ? <>
+                        <TableLoader />
+                    </> : <><Table>
                         <Thead>
                             <Th>S.N</Th>
                             <Th>Name</Th>
@@ -92,14 +95,11 @@ const users = () => {
 
                                         </Td>
 
-
-
-
                                     </Tr>
                                 ))}
                             </> : <></>}
                         </Tbody>
-                    </Table>
+                    </Table></>}
                 </div>
             </div>
 

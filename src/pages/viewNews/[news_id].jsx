@@ -60,7 +60,7 @@ const NewsDetail = () => {
                                 <Typography
                                     variant="body1"
                                     color="textPrimary"
-                                    className="leading-7"
+                                    className="leading-7 whitespace-pre-wrap"
                                 >
                                     {news.description}
                                 </Typography>

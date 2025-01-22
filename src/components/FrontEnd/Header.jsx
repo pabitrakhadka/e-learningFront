@@ -31,6 +31,11 @@ const Header = () => {
 
         },
         {
+            menu: 'सुचना तथा जानाकारी',
+            to: '/notice',
+
+        },
+        {
             menu: 'ग्यालरी',
             to: '/galary',
 
@@ -74,10 +79,10 @@ const Header = () => {
                 <div>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRevcYvebib_qG-dMifR86sOnmaqC_9t1kEsw&s" height={100} width={100} alt="Logo" />
                 </div>
-                <div className="text-center sm:text-left">
-                    <h1 className="font-bold text-red-600 text-2xl sm:text-xl md:text-3xl lg:p-3 text-center">पुरनधार बहुमुखि क्याम्पस</h1>
-                    <h1 className="font-bold text-red-600 text-2xl sm:text-2xl md:text-2xl lg:p-2 text-center">लुम्विनी प्रदेश हापुर् दाङ</h1>
-                    <h1 className=" lg:p01 font-bold text-red-600 text-xl sm:text-xl md:text-xl text-center">
+                <div style={{ fontFamily: "Noto Sans Devanagari" }} className="text-center sm:text-left">
+                    <h1 className="font-bold text-red-600 text-2xl sm:text-xl md:text-3xl lg: text-center">पुरनधार बहुमुखि क्याम्पस</h1>
+                    <h1 className=" text-red-600 text-xl sm:text-xl md:text-xl lg:p-2 text-center">लुम्विनी प्रदेश हापुर् दाङ</h1>
+                    <h1 className=" lg:p-1  text-red-600 text-xl sm:text-xl md:text-xl text-center">
                         "सिकाइ डिजिटल, भविष्य उज्ज्वल!"
                         "ई-लर्निङ: ज्ञानका लागि नयाँ दिशा।"
                         "घरमै बसेर डिजिटल माध्यमबाट शिक्षा।"

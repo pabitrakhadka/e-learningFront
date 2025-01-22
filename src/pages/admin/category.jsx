@@ -14,6 +14,7 @@ import { deleteCategory, getCategory, postCategory, putCategory } from '@/functi
 import { Table, Td, Thead, Tr } from '@/components/TableComp'
 import { FaTrash } from 'react-icons/fa6'
 import { FaEdit } from "react-icons/fa";
+import TableLoader from '@/components/UILoader/TableLoader'
 const initialValues = {
     name: "",
     description: ""
@@ -25,6 +26,7 @@ const category = () => {
     const [isOpenModal, setIsOpenModel] = useState(false);
     const [isLoading, setIsloading] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
+
     const [id, setId] = useState();
 
     useEffect(() => {
@@ -140,44 +142,46 @@ const category = () => {
                             <Loders />
                         </div>
                     </> : <>
+                        {isLoading ? <>
+                            <TableLoader />
+                        </> : <>
+                            <Table>
+                                <Thead>
+                                    <Td>S.N</Td>
+                                    <Td>Name</Td>
+                                    <Td>Description</Td>
 
-                        <Table>
-                            <Thead>
-                                <Td>S.N</Td>
-                                <Td>Name</Td>
-                                <Td>Description</Td>
+                                    <Td>
+                                        Created Date
+                                    </Td>
+                                    <Td colspan={2}>Actions</Td>
+                                </Thead>
 
-                                <Td>
-                                    Created Date
-                                </Td>
-                                <Td colspan={2}>Actions</Td>
-                            </Thead>
+                                {
+                                    category.length > 0 ? <>
+                                        {
+                                            category.map((item, index) => (
 
-                            {
-                                category.length > 0 ? <>
-                                    {
-                                        category.map((item, index) => (
+                                                <Tr key={index}>
+                                                    <Td>{index + 1}</Td>
+                                                    <Td>{item?.name}</Td>
+                                                    <Td>{item?.description}</Td>
 
-                                            <Tr key={index}>
-                                                <Td>{index + 1}</Td>
-                                                <Td>{item?.name}</Td>
-                                                <Td>{item?.description}</Td>
-
-                                                <Td>{item?.created_at}</Td>
-                                                <Td >
-                                                    <ButtonComp onClick={() => handleDelete(item?.id)} icon={<FaTrash color='white' size={30} />} />
-                                                </Td>
-                                                <Td >
-                                                    <ButtonComp onClick={() => handleEdit(item?.id)} icon={<FaEdit size={30} />} />
-                                                </Td>
-                                            </Tr>
-                                        ))
-                                    }
-                                </> : <>
-                                    <p>Category is not Fouond</p>
-                                </>
-                            }
-                        </Table>
+                                                    <Td>{item?.created_at}</Td>
+                                                    <Td >
+                                                        <ButtonComp onClick={() => handleDelete(item?.id)} icon={<FaTrash color='white' size={30} />} />
+                                                    </Td>
+                                                    <Td >
+                                                        <ButtonComp onClick={() => handleEdit(item?.id)} icon={<FaEdit size={30} />} />
+                                                    </Td>
+                                                </Tr>
+                                            ))
+                                        }
+                                    </> : <>
+                                        <p>Category is not Fouond</p>
+                                    </>
+                                }
+                            </Table></>}
                     </>}
                 </div>
             </div>

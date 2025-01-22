@@ -26,7 +26,7 @@ const NavComp = ({ menuList }) => {
             {/* Menu List */}
             <div className="flex flex-wrap justify-center w-full max-w-screen-lg">
                 {menuList.map((menu, index) => (
-                    <div key={index} className="mx-2 my-2 sm:mx-3 md:mx-2">
+                    <div style={{ fontFamily: "Noto Sans Devanagari" }} key={index} className="mx-2 my-2 sm:mx-3 md:mx-2">
                         {menu.subMenu ? (
                             <Button
                                 className="text-lg sm:text-xl text-blue-600 hover:text-blue-800 focus:outline-none"

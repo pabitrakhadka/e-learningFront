@@ -15,6 +15,8 @@ import { useToast } from '@/Context/TostContext';
 import ImageView from '@/components/ImageView';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { CiRead } from 'react-icons/ci';
+import PhotoViewer from '@/components/PhotoViewer';
+import ImageLoader from '@/components/UILoader/ImageLoader';
 
 const initialValues = {
     title: '',
@@ -122,9 +124,10 @@ const Images = () => {
 
                 const data = res?.data?.data;
                 setFieldValue("title", data.title);
-
+                setIsChecked(data.isSlider);
                 setFieldValue("isSlider", data.isSlider);
-                setImageFiles(null); // Reset image for editing
+                // setImageFiles(`${process.env.NEXT_PUBLIC_IMAGE_URL$}/${data.fileUrl}`);
+                // setImageFiles(null); // Reset image for editing
             }
         } catch (error) {
             console.error("Error loading category for edit:", error);
@@ -157,25 +160,7 @@ const Images = () => {
             }
         }
     };
-    const handleView = async (id) => {
-        if (!id) {
-            showToast(400, "ID is missing.");
-            return;
-        }
-        try {
-            const res = await getImage(`id=${id}`);
-            if (res.status === 200) {
-                openViewModal();
-                setViewImage(res?.data.data);
-                console.log("res=", res.data.data);
 
-            } else {
-
-            }
-        } catch (error) {
-
-        }
-    }
     return (
         <DashLayout>
             <div>
@@ -185,16 +170,20 @@ const Images = () => {
                     <h1>Images</h1>
                     <div className='shadow-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
                         {imageData.length > 0 ? <>
-                            {imageData.map((item, index) => (
-                                <div>
-                                    <ImageView key={index} image={item?.fileUrl} />
+                            {loading ? <>
+
+                                <ImageLoader />
+                            </> : <>{imageData.map((item, index) => (
+                                <div key={index}>
+
+                                    <PhotoViewer image={item?.fileUrl} desc={item?.title} />
                                     <div className=' p-3 flex justify-center items-center gap-8'>
                                         <ButtonComp onClick={() => handleDelete(item?.id)} icon={<FaTrash size={25} />} />
                                         <ButtonComp onClick={() => handleEdit(item?.id)} icon={<FaEdit size={25} />} />
-                                        <ButtonComp onClick={() => handleView(item?.id)} icon={<CiRead size={25} />} />
+
                                     </div>
                                 </div>
-                            ))}
+                            ))}</>}
                         </> : <></>}
                     </div>
                 </div>
@@ -213,10 +202,10 @@ const Images = () => {
                             {errors.title && touched.title && <p className="text-red-500">{errors.title}</p>}
                         </div>
                         <div>
-                            <CheckComp id='isSlider' isChecked={isChecked} label={"IS Slider Image"} onChange={handleChangeCheckBox} name='isSlider' />
+                            <CheckComp id='isSlider' isChecked={isChecked} label={"IS Slider Image"} onChange={handleChangeCheckBox} value={isChecked} name='isSlider' />
                         </div>
                         <div>
-                            {imageFiles ? (
+                            {isEdit ? <></> : <>    {imageFiles ? (
                                 <div className="image-preview-container flex">
 
                                     <img
@@ -234,7 +223,7 @@ const Images = () => {
                                     accept=".png,.jpeg,.jpg"
                                     multiple
                                 />
-                            )}
+                            )}</>}
                         </div>
                         <div className='flex justify-center items-center m-2'>
                             <ButtonComp name="Submit" type="submit" />
@@ -242,19 +231,7 @@ const Images = () => {
                     </form>
                 </div>
             </Modal>
-            <Modal isOpen={viewModeal} title={"View Image"} onClose={closeViewModal} >
-                <div>
-                    {viewImage ? <>
-                        <img
-                            src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${viewImage?.fileUrl}`}
-                            alt={"d"}
-                            className="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-300"
-                        />
-                    </> : <>
 
-                    </>}
-                </div>
-            </Modal>
         </DashLayout>
     );
 };

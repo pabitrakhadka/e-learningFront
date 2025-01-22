@@ -51,13 +51,17 @@ const DashLayout = ({ children }) => {
     };
     const dashMenu = [
         { name: "Home", to: "/admin", icon: <FaHome size="24" /> },
+        { name: "E-Book", to: "/admin/book", icon: <FaNewspaper size="24" /> },
+
+        { name: "Notice", to: "/admin/notice", icon: <FaNewspaper size="24" /> },
+
         { name: "News", to: "/admin/news", icon: <FaNewspaper size="24" /> },
         { name: "Category", to: "/admin/category", icon: <FaCarBurst size="24" /> },
         { name: "Messages", to: "/admin/message", icon: <FaMessage size="24" /> },
         { name: "Users", to: "/admin/users", icon: <FaUserCircle size="24" /> },
 
-
         { name: "Slider", to: "/admin/images", icon: <FaImage size="24" /> },
+        { name: "Setting", to: "/admin/setting", icon: <FaImage size="24" /> },
 
     ];
 

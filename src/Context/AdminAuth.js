@@ -24,7 +24,7 @@ export const AdminAuthProvider = ({ children }) => {
         try {
             const res = await checkAuthStatus('role=admin');
 
-
+            console.log("res=", res);
             // API call to check status
             if (res.status === 401) {
                 router.push('/admin/login');  // Redirect if user is not authenticated
@@ -33,6 +33,7 @@ export const AdminAuthProvider = ({ children }) => {
                 if (res?.data?.data?.role === "admin") {
                     setAdmin(res?.data?.data)
                     console.log(res?.data?.data);
+                    // console.log("admin ",)
                     // setSuperAdmin(res.data?.data);
                 }
 

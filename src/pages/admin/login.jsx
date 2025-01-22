@@ -26,8 +26,9 @@ const login = () => {
                 console.log(values)
                 const res = await adminiLogin(values);
 
-
-                if (res.status === 200) {
+                console.log("logn  ddata", res?.data?.data);
+                if (res.status === 200 && res?.data?.data?.role === "admin") {
+                    console.log("user datad", res.data.data);
                     showToast(res?.data, res.data.message);
                     login(res.data.data);
                     setTimeout(() => {
@@ -40,7 +41,7 @@ const login = () => {
                 console.error("Error submitting form:", error);
                 showToast(500, "Internal Server Error");
             } finally {
-                setSubmitting(false);  // Ensure form submission state is reset after handling.
+                setSubmitting(false);
             }
         }
 
@@ -85,10 +86,10 @@ const login = () => {
                         ) : null}
                     </div>
 
-                    <div className='flex justify-center mt-6'>
-                        <ButtonComp
+                    <div className='flex justify-center items-center mt-6 text-center'>
+                        <ButtonComp type='submit' defaultText={"Login"} loadingText='Login....'
                             name='Login'
-                            className="w-full bg-indigo-500 text-white py-2 px-6 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75"
+                            className=" text-center w-full bg-indigo-500 text-white py-2 px-6 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75"
                         />
 
                     </div>

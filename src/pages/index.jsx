@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '@/components/FrontEnd/Layout'
-import CustomCarousel from '@/components/FrontEnd/ImageSlider'
+
 import Marquee from 'react-fast-marquee'
 import { getNews } from '@/function/content'
 import CardCom from '@/components/CardCom'
 import ShowNewsCard from '@/components/ShowNewsCard'
 import { useRouter } from 'next/router'
+import { getNotice } from '@/function/notice'
+import { getBook } from '@/function/books'
+import NoticeCard from '@/components/NoticeCard'
+import CardNewsLoader from '@/components/UILoader/CardNewsLoader '
+import SliderImageLoader from '@/components/UILoader/SliderImageLoader'
+import { getImage } from '@/function/image'
+import SimpleImageSlider from "react-simple-image-slider";
+import CustomCarousel from '@/components/FrontEnd/ImageSlider'
+import ImageSlider from 'react-simple-image-slider'
+import SliderImage from '@/components/SliderImage'
 
-const images = [
-  { imgURL: "https://png.pngtree.com/thumb_back/fh260/background/20230425/pngtree-giant-elephant-in-the-forest-eating-grass-image_2555676.jpg", imgAlt: "image1" },
-  { imgURL: "https://png.pngtree.com/thumb_back/fh260/background/20230614/pngtree-landscape-hd-wallpaper-backgrounds-best-wallpaper-image_2929886.jpg", imgAlt: "image1" },
-  { imgURL: "https://c4.wallpaperflare.com/wallpaper/849/138/463/nature-high-resolution-wallpaper-preview.jpg", imgAlt: "bb" },
-  { imgURL: "https://c4.wallpaperflare.com/wallpaper/3/233/136/high-quality-nature-download-1920x1200-wallpaper-preview.jpg", imgAlt: "image1" }
-]
+
 const index = () => {
   const [hover, setHover] = useState(false);
   const [items] = useState([
@@ -23,18 +28,22 @@ const index = () => {
   const router = useRouter()
   const [isloading, setIsloading] = useState({
     isnewsData: true,
-    isinformatin: true,
-    isdownloadData: true
+    isNotice: true,
+    isbook: true,
+    isSlider: true
   });
   const [newsData, setNewData] = useState([]);
-  const [imformatin, setInformation] = useState([]);
-  const [downloadData, setDownloadData] = useState([]);
+  const [notices, setNotices] = useState([]);
+  const [books, setBooks] = useState([]);
   const handleMouseEnter = () => setHover(true);
   const handleMouseLeave = () => setHover(false);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
 
     loadNews();
+    loadNotice();
+    loadBooks(); loadImages();
   }, [])
 
   const loadNews = async () => {
@@ -54,26 +63,56 @@ const index = () => {
       console.log(error)
     }
   }
-  const loadInformation = () => {
+  const loadNotice = async () => {
     try {
-      const res = awaitget
+      const res = await getNotice("");
+
+
+
       if (res.status === 200) {
-
+        setNotices(res?.data.data);
+        setIsloading((prev) => ({
+          ...prev,
+          isNotice: false
+        }));
       } else {
-
+        console.log("erropr");
       }
     } catch (error) {
       console.log(error)
     }
   }
 
-  const loadDownloadInformation = () => {
+  const loadBooks = async () => {
     try {
-      const res = awaitget
+      const res = await getBook('');
       if (res.status === 200) {
-
+        setBooks(res?.data?.data);
+        setIsloading((prev) => ({
+          ...prev,
+          isbook: false
+        }));
       } else {
+        console.log("Heloo");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
+
+  const loadImages = async () => {
+    try {
+      const res = await getImage('');
+      if (res.status === 200) {
+        console.log("images=", res?.data?.data);
+        setImages(res?.data?.data);
+        setIsloading((prev) => ({
+          ...prev,
+          isSlider: false
+        }));
+      } else {
+        console.log("Heloo");
       }
     } catch (error) {
       console.log(error)
@@ -81,7 +120,7 @@ const index = () => {
   }
   return (
     <Layout>
-      <div className="bg-red-700 text-white flex items-center overflow-hidden p-2 sm:p-4">
+      <div className="bg-blue-400 text-white flex items-center overflow-hidden p-2 sm:p-4">
         <div>
           <h1 className="text-xl sm:text-xl md:text-2xl">Highlight</h1>
         </div>
@@ -126,11 +165,17 @@ const index = () => {
         )}
 
       </div>
-      <CustomCarousel>
-        {images.map((image, index) => {
-          return <img key={index} src={image.imgURL} alt={image.imgAlt} />;
-        })}
-      </CustomCarousel>
+
+      <div>
+        {isloading.isSlider ? (
+          <SliderImageLoader />
+        ) : (
+
+          <SliderImage images={images} />
+        )}
+      </div>
+
+
 
       <div className="flex flex-col md:flex-row gap-6 p-5">
         {/* News Section */}
@@ -141,7 +186,7 @@ const index = () => {
               <></>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {newsData.length > 0 ? (
+                {isloading.isnewsData ? <><CardNewsLoader /></> : <>{newsData.length > 0 ? (
                   newsData.map((item, index) => (
                     <div className="shadow-lg p-4 rounded-lg bg-white" key={index}>
                       <ShowNewsCard
@@ -154,7 +199,7 @@ const index = () => {
                   ))
                 ) : (
                   <p>No news available.</p>
-                )}
+                )}</>}
               </div>
             )}
           </div>
@@ -169,14 +214,10 @@ const index = () => {
               <></>
             ) : (
               <div className="grid grid-cols-1 gap-4">
-                {newsData.length > 0 ? (
-                  newsData.map((item, index) => (
+                {notices.length > 0 ? (
+                  notices.map((item, index) => (
                     <div className="shadow-lg p-4 rounded-lg bg-white" key={index}>
-                      <ShowNewsCard
-                        image={item?.file_url}
-                        cardTitle={item?.title}
-                        description={item?.description}
-                      />
+                      <NoticeCard id={item?.id} title={item?.title} date={item?.createdAt} />
                     </div>
                   ))
                 ) : (
